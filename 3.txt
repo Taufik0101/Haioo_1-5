@@ -1,0 +1,21 @@
+//FROM golang -> Seharusnya minimal ada Golang Version
+FROM golang:1.19
+
+// Create Directory Ketika Folder belum dibuat
+RUN mkdir -p /go/src/github.com/telkomdev/indihome/backend
+
+ADD . /go/src/github.com/telkomdev/indihome/backend
+
+WORKDIR /go/src/github.com/telkomdev/indihome
+
+RUN go get github.com/tools/godep
+
+RUN godep restore
+
+RUN go install github.com/telkomdev/indihome
+
+//ENTRYPOINT /go/bin/indihome
+ENTRYPOINT ["/go/bin/indihome", "-D", "FOREGROUND"]
+
+//LISTEN 80
+EXPOSE 8000
